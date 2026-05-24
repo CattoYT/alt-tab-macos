@@ -330,6 +330,7 @@
 		1C961F68C77AAE38E5A2E046 /* app_icons_show_running_applications_light@2x.heic */ = {isa = PBXFileReference; lastKnownFileType = image.heic; path = "app_icons_show_running_applications_light@2x.heic"; sourceTree = "<group>"; };
 		1C961FB3DCF4906FEEF4A23D /* TableGroupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableGroupView.swift; sourceTree = "<group>"; };
 		25966EE691FC6871588D796B /* ProBadgeViewSegmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProBadgeViewSegmentTests.swift; sourceTree = "<group>"; };
+		2F6FE60C2FC3632A00BE3593 /* full_build.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = full_build.sh; sourceTree = "<group>"; };
 		2FFE0FE92FC35331008A4801 /* Clock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Clock.swift; sourceTree = "<group>"; };
 		2FFE0FEA2FC35331008A4801 /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		2FFE0FEB2FC35331008A4801 /* LicenseAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LicenseAPI.swift; sourceTree = "<group>"; };
@@ -1352,6 +1353,7 @@
 				1C961AD30050B3BAC2A8EDD4 /* swiftformat.js */,
 				BF0C8C0FF1B21F5F7CE16B79 /* print_env.sh */,
 				BF0C89D7F23D82A3FF442E0B /* build_app.sh */,
+				2F6FE60C2FC3632A00BE3593 /* full_build.sh */,
 				BF0C8A261AAA42191426A587 /* run_tests.sh */,
 				BF0C8398D6064E4C37F58EB3 /* utils */,
 				BF0C84D1311C50D757DC5C2C /* l10n */,
@@ -2434,7 +2436,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11.1;
+				CURRENT_PROJECT_VERSION = 11.2;
 				DEVELOPMENT_TEAM = 542CGK5964;
 				INFOPLIST_KEY_CFBundleDisplayName = "Alt Tab";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
@@ -2450,7 +2452,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D04BA1232AFEEFE90D5CC827 /* debug.xcconfig */;
 			buildSettings = {
-				CURRENT_PROJECT_VERSION = 11.1;
+				CURRENT_PROJECT_VERSION = 11.2;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_KEY_CFBundleDisplayName = "Alt Tab";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";

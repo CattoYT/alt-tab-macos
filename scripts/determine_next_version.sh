@@ -2,7 +2,7 @@
 
 set -exu
 
-semanticRelease=$(npx semantic-release --dry-run --ci false)
-version=$(echo "$semanticRelease" | sed -nE 's/.+The next release version is (.+)/\1/p')
+semanticRelease=$(curl -s https://api.github.com/repos/lwouis/alt-tab-macos/releases/latest | jq -r .tag_name)
+version=$(echo "$semanticRelease" | sed 's/^v//')
 
 echo "$version" > $VERSION_FILE
