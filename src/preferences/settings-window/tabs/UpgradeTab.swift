@@ -11,14 +11,14 @@ class UpgradeTab {
     private static var featuresList: NSStackView!
     private static var isActivating = false
     private static var isInitialized = false
-
+    
     static func initTab() -> NSView {
         let view = makeView()
         isInitialized = true
         refreshStatus()
         return view
     }
-
+    
     static func cleanup() {
         isInitialized = false
         isActivating = false
@@ -31,7 +31,7 @@ class UpgradeTab {
         proManageTable = nil
         featuresList = nil
     }
-
+    
     private static func makeView() -> NSView {
         let headerStrip = makeHeaderStrip()
         usageHero = UsageStatHeroView()
@@ -63,7 +63,7 @@ class UpgradeTab {
         headerStrip.widthAnchor.constraint(equalToConstant: SettingsWindow.contentWidth).isActive = true
         return bodyStack
     }
-
+    
     private static func makeGuaranteeLabel() -> NSTextField {
         let label = NSTextField(labelWithString: NSLocalizedString("30-day money-back guarantee", comment: ""))
         label.font = NSFont.systemFont(ofSize: 11)
@@ -71,7 +71,7 @@ class UpgradeTab {
         label.alignment = .center
         return label
     }
-
+    
     private static func makeSeparator() -> NSBox {
         let box = NSBox()
         box.boxType = .separator
@@ -79,7 +79,7 @@ class UpgradeTab {
         box.widthAnchor.constraint(equalToConstant: 220).isActive = true
         return box
     }
-
+    
     private static func makeActivateLinkRow() -> NSStackView {
         let haveKey = makeFooterLink(NSLocalizedString("I already have a license key", comment: "")) {
             presentActivationSheet()
@@ -99,7 +99,7 @@ class UpgradeTab {
         stack.addArrangedSubview(lostKey)
         return stack
     }
-
+    
     private static func makeFooterLink(_ title: String, onClick: @escaping () -> Void) -> NSButton {
         let button = NSButton(title: title, target: nil, action: nil)
         button.isBordered = false
@@ -110,7 +110,7 @@ class UpgradeTab {
         button.onAction = { _ in onClick() }
         return button
     }
-
+    
     private static func makeHeaderStrip() -> NSStackView {
         let titleFont = NSFont.systemFont(ofSize: 15, weight: .medium)
         let titleText = NSLocalizedString("AltTab Pro", comment: "")
@@ -120,7 +120,7 @@ class UpgradeTab {
         ])
         if let range = titleText.range(of: "Pro", options: .backwards) {
             titleAttr.replaceCharacters(in: NSRange(range, in: titleText),
-                with: ProGradient.makeProTextAttachment(font: titleFont))
+                                        with: ProGradient.makeProTextAttachment(font: titleFont))
         }
         let titleLabel = NSTextField(labelWithAttributedString: titleAttr)
         // Match the section-title NSTextField cell drawing path. Without these, the
@@ -156,7 +156,7 @@ class UpgradeTab {
         strip.addArrangedSubview(statusLabel)
         return strip
     }
-
+    
     private static func makeHeroButton() -> ProHeroButton {
         let button = ProHeroButton()
         button.onAction = { _ in ProTransitionManager.openCheckout() }
@@ -164,20 +164,17 @@ class UpgradeTab {
         button.widthAnchor.constraint(equalToConstant: 220).isActive = true
         return button
     }
-
+    
     private static func makeProManageTable() -> TableGroupView {
         let table = TableGroupView(width: SettingsWindow.contentWidth)
-        let manageButton = NSButton(title: NSLocalizedString("My Account", comment: ""), target: nil, action: nil)
-        manageButton.onAction = { _ in openAccountPage() }
-        table.addRow(leftText: NSLocalizedString("Manage activations, view receipts, etc", comment: ""), rightViews: [manageButton], isAddSeparator: false)
-        let deactivateButton = NSButton(title: NSLocalizedString("Deactivate license", comment: ""), target: nil, action: nil)
-        deactivateButton.onAction = { _ in deactivateLicense() }
-        let deactivateHint = TableGroupView.makeText(NSLocalizedString("License will remain valid and usable to activate AltTab on any machine", comment: ""))
+        table.addRow(leftText: NSLocalizedString("Patched by jp9j", comment: ""), isAddSeparator: false)
+        //        let deactivateButton = NSButton(title: NSLocalizedString("Deactivate license (nope)", comment: ""), target: nil, action: nil)
+        
+        let deactivateHint = TableGroupView.makeText(NSLocalizedString("License will remain valid and usable Forever", comment: ""))
         deactivateHint.textColor = .secondaryLabelColor
-        table.addRow(leftViews: [TableGroupView.makeText(NSLocalizedString("Deactivate license on this machine", comment: ""))], rightViews: [deactivateButton], secondaryViews: [deactivateHint])
         return table
     }
-
+    
     private static func makeFeaturesList() -> NSStackView {
         let features = [
             NSLocalizedString("App Icons & Window Titles styles", comment: ""),
@@ -209,7 +206,7 @@ class UpgradeTab {
         }
         return stack
     }
-
+    
     static func refreshStatus() {
         SettingsWindow.shared?.refreshUpgradeButton()
         guard isInitialized else { return }
@@ -226,8 +223,8 @@ class UpgradeTab {
             proManageTable.isHidden = false
             let email = LicenseManager.shared.customerEmail ?? ""
             let format = LicenseManager.shared.isLifetimeVariant
-                ? NSLocalizedString("Pro Lifetime license activated for %@", comment: "")
-                : NSLocalizedString("Pro license activated for %@", comment: "")
+            ? NSLocalizedString("Pro Lifetime license activated for %@", comment: "")
+            : NSLocalizedString("Pro license activated for %@", comment: "")
             let fullText = String(format: format, email)
             let attributed = makeStatusSubtitle(fullText)
             if !email.isEmpty, let emailRange = fullText.range(of: email) {
@@ -254,31 +251,31 @@ class UpgradeTab {
             statusLabel.attributedStringValue = makeStatusSubtitle(NSLocalizedString("Trial expired", comment: ""))
         }
     }
-
+    
     private static func setHeroVisible(_ visible: Bool) {
         usageHero.isHidden = !visible
         heroButton.isHidden = !visible
         guaranteeLabel.isHidden = !visible
         separator.isHidden = !visible
     }
-
+    
     private static func makeStatusSubtitle(_ text: String) -> NSMutableAttributedString {
         NSMutableAttributedString(string: text, attributes: [
             .foregroundColor: NSColor.secondaryLabelColor,
             .font: NSFont.systemFont(ofSize: 12),
         ])
     }
-
+    
     static func openAccountPage() {
         NSWorkspace.shared.open(URL(string: Endpoints.accountUrl)!)
     }
-
+    
     private static func presentActivationSheet(prefilledKey: String = "", autoFailedHint: Bool = false) {
         let alert = NSAlert()
         alert.alertStyle = autoFailedHint ? .warning : .informational
         alert.messageText = autoFailedHint
-            ? NSLocalizedString("Automatic activation failed", comment: "")
-            : NSLocalizedString("Activate your Pro license", comment: "")
+        ? NSLocalizedString("Automatic activation failed", comment: "")
+        : NSLocalizedString("Activate your Pro license", comment: "")
         alert.informativeText = NSLocalizedString("Paste your license key:", comment: "")
         let field = makeKeyField(prefilled: prefilledKey)
         alert.accessoryView = field
@@ -295,7 +292,7 @@ class UpgradeTab {
             activateLicense(key)
         }
     }
-
+    
     private static func makeKeyField(prefilled: String) -> NSTextField {
         let placeholder = "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
         let font: NSFont
@@ -318,7 +315,7 @@ class UpgradeTab {
         field.stringValue = prefilled
         return field
     }
-
+    
     private static func activateLicense(_ key: String) {
         guard !key.isEmpty, !isActivating else { return }
         isActivating = true
@@ -328,99 +325,85 @@ class UpgradeTab {
             case .success:
                 refreshStatus()
                 App.resetPreferencesDependentComponents()
-            case .failure(let error):
-                if case let LicenseAPIError.seatLimitExceeded(instances) = error, !instances.isEmpty {
-                    presentSeatLimitSheet(key: key, instances: instances)
-                    return
-                }
+            case .failure(_):
                 let alert = NSAlert()
-                alert.alertStyle = .warning
-                alert.messageText = NSLocalizedString("Activation failed", comment: "")
-                alert.informativeText = error.localizedDescription
-                addDebugInfoToAlert(alert, error)
+                alert.alertStyle = .informational
+                alert.messageText = "Patched by jp9j"
                 alert.addButton(withTitle: NSLocalizedString("OK", comment: ""))
-                alert.addButton(withTitle: NSLocalizedString("My Account", comment: ""))
-                if alert.runModal() == .alertSecondButtonReturn {
-                    openAccountPage()
-                }
+
+//                if case let LicenseAPIError.seatLimitExceeded(instances) = error, !instances.isEmpty {
+//                    presentSeatLimitSheet(key: key, instances: instances)
+//                    return
+//                }
+//                let alert = NSAlert()
+//                alert.alertStyle = .warning
+//                alert.messageText = NSLocalizedString("Activation failed", comment: "")
+//                alert.informativeText = error.localizedDescription
+//                addDebugInfoToAlert(alert, error)
+//                alert.addButton(withTitle: NSLocalizedString("OK", comment: ""))
+//                alert.addButton(withTitle: NSLocalizedString("My Account", comment: ""))
+//                if alert.runModal() == .alertSecondButtonReturn {
+//                    openAccountPage()
+//                }
+
             }
         }
     }
+    
+    //    private static func presentSeatLimitSheet(key licenseKey: String, instances: [ActiveInstance]) {
+    //        let alert = NSAlert()
+    //        alert.alertStyle = .warning
+    //        alert.messageText = NSLocalizedString("This license is already activated elsewhere", comment: "")
+    //        alert.informativeText = NSLocalizedString("Pick a machine to deactivate so you can activate here.", comment: "")
+    //
+    //        let formatter = DateFormatter()
+    //        formatter.dateStyle = .medium
+    //        formatter.timeStyle = .none
+    //
+    //        let stack = NSStackView()
+    //        stack.orientation = .vertical
+    //        stack.alignment = .leading
+    //        stack.spacing = 4
+    //        var buttons: [NSButton] = []
+    //        for (i, instance) in instances.enumerated() {
+    //            let name = instance.machineName ?? String(format: NSLocalizedString("Machine %@", comment: ""), String(instance.id.prefix(8)))
+    //            let lastSeen = formatter.string(from: instance.lastSeenAt)
+    //            let title = String(format: NSLocalizedString("%@ — last seen %@", comment: ""), name, lastSeen)
+    //            let button = NSButton(radioButtonWithTitle: title, target: nil, action: nil)
+    //            button.tag = i
+    //            if i == 0 { button.state = .on }
+    //            buttons.append(button)
+    //            stack.addArrangedSubview(button)
+    //        }
+    //        stack.frame = NSRect(x: 0, y: 0, width: 380, height: CGFloat(instances.count) * 22)
+    //        alert.accessoryView = stack
+    //
+    //        alert.addButton(withTitle: NSLocalizedString("Deactivate and activate here", comment: ""))
+    //        let cancelButton = alert.addButton(withTitle: NSLocalizedString("Cancel", comment: ""))
+    //        cancelButton.keyEquivalent = "\u{1b}" // Escape
+    //
+    //        let response = alert.runModal()
+    //        guard response == .alertFirstButtonReturn,
+    //              let selected = buttons.first(where: { $0.state == .on }),
+    //              selected.tag < instances.count else {
+    //            return
+    //        }
+    //        let instance = instances[selected.tag]
+    //        LicenseManager.shared.deactivateInstance(licenseKey: licenseKey, instanceId: instance.id) { result in
+    //            switch result {
+    //            case .success:
+    //                activateLicense(licenseKey)
+    //            case .failure(let error):
+    //                let errAlert = NSAlert()
+    //                errAlert.alertStyle = .warning
+    //                errAlert.messageText = NSLocalizedString("Couldn't deactivate that machine", comment: "")
+    //                errAlert.informativeText = error.localizedDescription
+    //                addDebugInfoToAlert(errAlert, error)
+    //                errAlert.runModal()
+    //            }
+    //        }
+    //}
 
-    private static func presentSeatLimitSheet(key licenseKey: String, instances: [ActiveInstance]) {
-        let alert = NSAlert()
-        alert.alertStyle = .warning
-        alert.messageText = NSLocalizedString("This license is already activated elsewhere", comment: "")
-        alert.informativeText = NSLocalizedString("Pick a machine to deactivate so you can activate here.", comment: "")
-
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .none
-
-        let stack = NSStackView()
-        stack.orientation = .vertical
-        stack.alignment = .leading
-        stack.spacing = 4
-        var buttons: [NSButton] = []
-        for (i, instance) in instances.enumerated() {
-            let name = instance.machineName ?? String(format: NSLocalizedString("Machine %@", comment: ""), String(instance.id.prefix(8)))
-            let lastSeen = formatter.string(from: instance.lastSeenAt)
-            let title = String(format: NSLocalizedString("%@ — last seen %@", comment: ""), name, lastSeen)
-            let button = NSButton(radioButtonWithTitle: title, target: nil, action: nil)
-            button.tag = i
-            if i == 0 { button.state = .on }
-            buttons.append(button)
-            stack.addArrangedSubview(button)
-        }
-        stack.frame = NSRect(x: 0, y: 0, width: 380, height: CGFloat(instances.count) * 22)
-        alert.accessoryView = stack
-
-        alert.addButton(withTitle: NSLocalizedString("Deactivate and activate here", comment: ""))
-        let cancelButton = alert.addButton(withTitle: NSLocalizedString("Cancel", comment: ""))
-        cancelButton.keyEquivalent = "\u{1b}" // Escape
-
-        let response = alert.runModal()
-        guard response == .alertFirstButtonReturn,
-              let selected = buttons.first(where: { $0.state == .on }),
-              selected.tag < instances.count else {
-            return
-        }
-        let instance = instances[selected.tag]
-        LicenseManager.shared.deactivateInstance(licenseKey: licenseKey, instanceId: instance.id) { result in
-            switch result {
-            case .success:
-                activateLicense(licenseKey)
-            case .failure(let error):
-                let errAlert = NSAlert()
-                errAlert.alertStyle = .warning
-                errAlert.messageText = NSLocalizedString("Couldn't deactivate that machine", comment: "")
-                errAlert.informativeText = error.localizedDescription
-                addDebugInfoToAlert(errAlert, error)
-                errAlert.runModal()
-            }
-        }
-    }
-
-    private static func deactivateLicense() {
-        LicenseManager.shared.deactivate { result in
-            switch result {
-            case .success:
-                refreshStatus()
-                App.resetPreferencesDependentComponents()
-            case .failure(let error):
-                let alert = NSAlert()
-                alert.alertStyle = .warning
-                alert.messageText = NSLocalizedString("Deactivation failed", comment: "")
-                alert.informativeText = error.localizedDescription
-                addDebugInfoToAlert(alert, error)
-                alert.addButton(withTitle: NSLocalizedString("OK", comment: ""))
-                alert.addButton(withTitle: NSLocalizedString("My Account", comment: ""))
-                if alert.runModal() == .alertSecondButtonReturn {
-                    openAccountPage()
-                }
-            }
-        }
-    }
 
     private static func addDebugInfoToAlert(_ alert: NSAlert, _ error: Error) {
         let debugInfo: String?

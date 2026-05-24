@@ -6,7 +6,7 @@ import Foundation
 ///
 /// Storage: `LicenseManager.defaultsSuiteName` suite, keys prefixed `proTransition.`.
 class ProTransitionState {
-    static let defaults = UserDefaults(suiteName: LicenseManager.defaultsSuiteName)!
+    static let defaults = UserDefaults()
 
     // MARK: - Persisted Day-X flags
 
