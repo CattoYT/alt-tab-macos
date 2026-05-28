@@ -100,6 +100,16 @@ class Application: NSObject {
 
     deinit {
         Logger.info { self.debugId }
+        // `NSRunningApplication` KVO removal can throw NSInternalInconsistencyException
+        // ("Failed to register for runningApplicationNotificationCallback") — an Apple bug
+        // when the underlying notification XPC service has gone away (e.g. observed app
+        // terminated, or we are quitting). Pre-emptively invalidate inside an ObjC try/catch;
+        // the subsequent automatic ivar destroy of `kvObservers` is then a no-op.
+        let observers = kvObservers
+        kvObservers = nil
+        ObjCExceptionCatcher.catching {
+            observers?.forEach { $0.invalidate() }
+        }
     }
 
     /// Symmetric counterpart to the `CFRunLoopAddSource` in `observeEvents()`. See
@@ -172,7 +182,7 @@ class Application: NSObject {
     @discardableResult
     func addWindowlessWindowIfNeeded() -> Window? {
         guard runningApplication.activationPolicy == .regular && !runningApplication.isTerminated
-               && !(Windows.list.contains { $0.application.pid == pid }) else { return nil }
+               && !(Windows.list.contains { $0.application.pid == pid && !$0.isInvisible }) else { return nil }
         let window = Window(self)
         Windows.appendWindow(window)
         focusedWindow = nil
