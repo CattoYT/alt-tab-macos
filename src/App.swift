@@ -448,7 +448,6 @@ extension App: NSApplicationDelegate {
 
         LicenseManager.shared.onStateChanged = { state in
             Menubar.refreshLicenseMenuItems()
-            syncLicenseCookie(state: state)
             ProTransitionManager.shared.onLicenseStateChanged()
             UpgradeTab.refreshStatus()
             SettingsWindow.shared?.refreshUpgradeButton()

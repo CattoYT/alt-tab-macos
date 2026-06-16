@@ -5,7 +5,7 @@ class LicenseManager {
 
     static let shared: LicenseManager = {
         return LicenseManager(
-            clock: SystemClock()
+//            clock: SystemClock()
         )
     }()
 
@@ -19,7 +19,7 @@ class LicenseManager {
     /// When a Pro variant needs a cutoff, add: "variant_slug": "X.Y.Z".
     static let versionLimitedVariants: [String: String] = [:]
 
-    let clock: Clock
+//    let clock: Clock
 
     /// Called whenever `state` changes (including the initial `initialize()` assignment).
     /// Production wires this up in App.swift to refresh Menubar, sync Sparkle cookie, and notify ProTransitionManager.
@@ -52,13 +52,15 @@ class LicenseManager {
     }
 
     var daysSinceTrialStart: Int {
-        guard let start = trialStartDate else { return 0 }
-        return Int(clock.now.timeIntervalSince(start) / 86400)
+//        guard let start = trialStartDate else { return 0 }
+//        return Int(clock.now.timeIntervalSince(start) / 86400)
+        return Int(0)
+
     }
 
-    init(clock: Clock) {
-        self.clock = clock
-    }
+//    init(clock: Clock) {
+//        self.clock = clock
+//    }
 
     func initialize() {
         state = computeState()
@@ -95,12 +97,12 @@ class LicenseManager {
         state = .trialExpired
     }
 
-    func mockTrialDay(_ day: Int) {
-        let trialStart = clock.now.addingTimeInterval(-Double(day - 1) * 86400)
-
-        let daysRemaining = Self.trialDuration - (day - 1)
-        state = daysRemaining > 0 ? .trial(daysRemaining: daysRemaining) : .trialExpired
-    }
+//    func mockTrialDay(_ day: Int) {
+//        let trialStart = clock.now.addingTimeInterval(-Double(day - 1) * 86400)
+//
+//        let daysRemaining = Self.trialDuration - (day - 1)
+//        state = daysRemaining > 0 ? .trial(daysRemaining: daysRemaining) : .trialExpired
+//    }
 
     func mockProUser() {
 

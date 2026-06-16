@@ -94,28 +94,28 @@ class ProTransitionState {
     // MARK: - Snapshot into the pure decision State
 
     /// Assemble a `ProTransitionManagerTestable.State` for the pure decision logic.
-    func snapshot(licenseState: LicenseState, daysSinceTrialStart: Int, clock: Clock) -> ProTransitionManagerTestable.State {
-        let now = clock.now
-        let cal = Calendar.current
-        let hour = cal.component(.hour, from: now)
-        let minute = cal.component(.minute, from: now)
-        return ProTransitionManagerTestable.State(
-            isPro: { if case .pro = licenseState { return true }; return false }(),
-            isTrialActive: licenseState.isProAvailable,
-            daysSinceTrialStart: daysSinceTrialStart,
-            isInTimeWindow: ProTransitionManagerTestable.isInTimeWindow(hour: hour, minute: minute),
-            hasSeenWelcome: hasSeenWelcome,
-            hasSeenDay4Tour: hasSeenDay4Tour,
-            hasSeenDay12: hasSeenDay12,
-            freePassUsed: freePassUsed,
-            hasSeenFullUpgrade: hasSeenFullUpgrade,
-            hasSeenProactiveDay15: hasSeenProactiveDay15,
-            hasSeenDay21: hasSeenDay21,
-            hasSeenDay35: hasSeenDay35,
-            userOptedOut: userOptedOut,
-            hasTriggeredPostExpirationSwitcher: hasTriggeredPostExpirationSwitcher
-        )
-    }
+//    func snapshot(licenseState: LicenseState, daysSinceTrialStart: Int, clock: Clock) -> ProTransitionManagerTestable.State {
+//        let now = clock.now
+//        let cal = Calendar.current
+//        let hour = cal.component(.hour, from: now)
+//        let minute = cal.component(.minute, from: now)
+//        return ProTransitionManagerTestable.State(
+//            isPro: { if case .pro = licenseState { return true }; return false }(),
+//            isTrialActive: licenseState.isProAvailable,
+//            daysSinceTrialStart: daysSinceTrialStart,
+//            isInTimeWindow: ProTransitionManagerTestable.isInTimeWindow(hour: hour, minute: minute),
+//            hasSeenWelcome: hasSeenWelcome,
+//            hasSeenDay4Tour: hasSeenDay4Tour,
+//            hasSeenDay12: hasSeenDay12,
+//            freePassUsed: freePassUsed,
+//            hasSeenFullUpgrade: hasSeenFullUpgrade,
+//            hasSeenProactiveDay15: hasSeenProactiveDay15,
+//            hasSeenDay21: hasSeenDay21,
+//            hasSeenDay35: hasSeenDay35,
+//            userOptedOut: userOptedOut,
+//            hasTriggeredPostExpirationSwitcher: hasTriggeredPostExpirationSwitcher
+//        )
+//    }
 
     // MARK: - QA / Debug
 

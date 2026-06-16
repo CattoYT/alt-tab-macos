@@ -159,8 +159,7 @@ class ProTransitionManager {
     var hasTriggeredPostExpirationSwitcher: Bool { get { state.hasTriggeredPostExpirationSwitcher } set { state.hasTriggeredPostExpirationSwitcher = newValue } }
 
     var shouldShowBadgeDot: Bool {
-        ProTransitionManagerTestable.shouldShowBadgeDot(currentState())
-    }
+false    }
 
     // MARK: - Lifecycle
 
@@ -203,43 +202,43 @@ class ProTransitionManager {
     /// Called from App.showUiOrCycleSelection() at the start of a fresh switcher session (not on cycle).
     /// Decides whether to queue a Day 4 tour or a post-expiration free-pass + [C] for after dismissal.
     func onSwitcherShown() {
-        let action = ProTransitionManagerTestable.evaluateSwitcherOpen(currentState())
-        switch action {
-        case .showDay4Tour:
-            state.hasSeenDay4Tour = true
-            pendingDismissAction = .showDay4Tour
-        case .triggerFreePass:
-            state.freePassUsed = true
-            state.hasTriggeredPostExpirationSwitcher = true
-            isFreePassSessionActive = true
-            let style = state.rememberedAppearanceStyle.flatMap { AppearanceStylePreference.allCases[safe: $0] }
-            let reason = HardGateReason.proPreferences(
-                appearanceStyle: style,
-                shortcut: state.rememberedShortcutStyle != nil)
-            pendingDismissAction = .showFullUpgrade(reason)
-        case .noop:
-            break
-        }
+//        let action = ProTransitionManagerTestable.evaluateSwitcherOpen(currentState())
+//        switch action {
+//        case .showDay4Tour:
+//            state.hasSeenDay4Tour = true
+//            pendingDismissAction = .showDay4Tour
+//        case .triggerFreePass:
+//            state.freePassUsed = true
+//            state.hasTriggeredPostExpirationSwitcher = true
+//            isFreePassSessionActive = true
+//            let style = state.rememberedAppearanceStyle.flatMap { AppearanceStylePreference.allCases[safe: $0] }
+//            let reason = HardGateReason.proPreferences(
+//                appearanceStyle: style,
+//                shortcut: state.rememberedShortcutStyle != nil)
+//            pendingDismissAction = .showFullUpgrade(reason)
+//        case .noop:
+//            break
+//        }
     }
 
     /// Returns true if the feature should be allowed to execute
-    func attemptHardGatedFeature(_ feature: ProFeature) -> Bool {
-        let action = ProTransitionManagerTestable.evaluateHardGate(currentState())
-        switch action {
-        case .allow: return true
-        case .freePass:
-            state.freePassUsed = true
-            isFreePassSessionActive = true
-            pendingDismissAction = .showFullUpgrade(.feature(feature))
-            return true
-        case .showFullUpgrade:
-            showFullUpgradeWindow(for: .feature(feature))
-            return false
-        case .showHardGatePopover:
-            emit(.showDay15HardGatePopover(.feature(feature)))
-            return false
-        }
-    }
+//    func attemptHardGatedFeature(_ feature: ProFeature) -> Bool {
+//        let action = ProTransitionManagerTestable.evaluateHardGate(currentState())
+//        switch action {
+//        case .allow: return true
+//        case .freePass:
+//            state.freePassUsed = true
+//            isFreePassSessionActive = true
+//            pendingDismissAction = .showFullUpgrade(.feature(feature))
+//            return true
+//        case .showFullUpgrade:
+//            showFullUpgradeWindow(for: .feature(feature))
+//            return false
+//        case .showHardGatePopover:
+//            emit(.showDay15HardGatePopover(.feature(feature)))
+//            return false
+//        }
+//    }
 
     func showFullUpgradeWindow(for reason: HardGateReason? = nil) {
         // Flip the flag *before* `onProLockEngaged()` so the notification it posts reflects
@@ -269,38 +268,38 @@ class ProTransitionManager {
     // MARK: - Timed fire dispatch
 
     private func evaluateAndShow() {
-        let action = ProTransitionManagerTestable.evaluateTimedAction(currentState())
-        switch action {
-        case .showWelcome:
-            state.hasSeenWelcome = true
-            emit(.showWelcome)
-        case .showDay12HeadsUp:
-            state.hasSeenDay12 = true
-            emit(.showDay12HeadsUp)
-        case .showDay15Proactive:
-            showProactiveDay15Window()
-        case .showDay21Reminder:
-            state.hasSeenDay21 = true
-            emit(.showDay21Reminder)
-        case .showDay35Final:
-            state.hasSeenDay35 = true
-            emit(.showDay35Final)
-        case .refreshBadgeDot:
-            emit(.refreshBadge)
-        case .none:
-            break
-        }
+//        let action = ProTransitionManagerTestable.evaluateTimedAction(currentState())
+//        switch action {
+//        case .showWelcome:
+//            state.hasSeenWelcome = true
+//            emit(.showWelcome)
+//        case .showDay12HeadsUp:
+//            state.hasSeenDay12 = true
+//            emit(.showDay12HeadsUp)
+//        case .showDay15Proactive:
+//            showProactiveDay15Window()
+//        case .showDay21Reminder:
+//            state.hasSeenDay21 = true
+//            emit(.showDay21Reminder)
+//        case .showDay35Final:
+//            state.hasSeenDay35 = true
+//            emit(.showDay35Final)
+//        case .refreshBadgeDot:
+//            emit(.refreshBadge)
+//        case .none:
+//            break
+//        }
     }
 
     // MARK: - State snapshot
 
-    func currentState() -> ProTransitionManagerTestable.State {
-        state.snapshot(
-            licenseState: LicenseManager.shared.state,
-            daysSinceTrialStart: LicenseManager.shared.daysSinceTrialStart,
-            clock: LicenseManager.shared.clock
-        )
-    }
+//    func currentState() -> ProTransitionManagerTestable.State {
+////        state.snapshot(
+////            licenseState: LicenseManager.shared.state,
+////            daysSinceTrialStart: LicenseManager.shared.daysSinceTrialStart,
+////        )
+//        
+//    }
 
     // MARK: - Checkout helper
 

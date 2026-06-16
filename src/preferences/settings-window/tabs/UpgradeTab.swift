@@ -406,12 +406,12 @@ class UpgradeTab {
 
 
     private static func addDebugInfoToAlert(_ alert: NSAlert, _ error: Error) {
-        let debugInfo: String?
-        if let licenseError = error as? LicenseAPIError {
-            debugInfo = licenseError.debugInfo
-        } else {
-            debugInfo = nil
-        }
+        let debugInfo: String? = nil
+//        if let licenseError = error as? LicenseAPIError {
+//            debugInfo = licenseError.debugInfo
+//        } else {
+//            debugInfo = nil
+//        }
         guard let debugInfo else { return }
         let disclosure = NSButton(title: NSLocalizedString("Show details (for support)", comment: ""), target: nil, action: nil)
         disclosure.bezelStyle = .disclosure
